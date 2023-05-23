@@ -1,7 +1,20 @@
 import React, {  useReducer, useContext } from 'react';
 import reducer from './reducer';
 import axios from 'axios'
-import {DISPLAY_ALERT,CLEAR_ALERT, REGISTER_USER_BEGIN,REGISTER_USER_SUCCESS,REGISTER_USER_ERROR} from './actions'
+import {DISPLAY_ALERT,
+  CLEAR_ALERT, 
+  REGISTER_USER_BEGIN,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
+  LOGIN_USER_BEGIN,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
+  SETUP_USER_BEGIN,
+  SETUP_USER_SUCCESS,
+  SETUP_USER_ERROR,
+
+
+} from './actions'
 
 // set as default
 const token = localStorage.getItem('token');
@@ -35,7 +48,7 @@ const displayAlert = ()=>{
           });
         }, 3000);
       };
-
+//--------------------------
 const registerUser = async (currentUser) =>{
   dispatch({type:REGISTER_USER_BEGIN})
 try{
@@ -58,10 +71,53 @@ try{
 clearAlert()
 }
 
+//--------------------------
+
+const loginUser = async (currentUser) =>{
+  dispatch({type:LOGIN_USER_BEGIN})
+try{
+  const {data} = await axios.post('http://localhost:2000/api/v1/auth/login',currentUser)
+
+  const {user,token,location} = data
+  dispatch({
+    type:LOGIN_USER_SUCCESS,
+    payload:{user,token,location}
+  })
+  //local storage
+  addUserToLocalStorage({ user,token,location,
+  });
+
+}catch(error){
+  dispatch({type:LOGIN_USER_ERROR,payload:{msg:error.response.data.msg}})
+}
+clearAlert()
+}
+//--------------------------
+
+const setupUser = async ({currentUser,endPoint,alertText}) =>{
+  dispatch({type:SETUP_USER_BEGIN})
+try{
+  const {data} = await axios.post(`http://localhost:2000/api/v1/auth/${endPoint}`,currentUser)
+
+  const {user,token,location} = data
+  dispatch({
+    type:SETUP_USER_SUCCESS,
+    payload:{user,token,location,alertText}
+  })
+  //local storage
+  addUserToLocalStorage({ user,token,location,
+  });
+
+}catch(error){
+  dispatch({type:SETUP_USER_ERROR,payload:{msg:error.response.data.msg}})
+}
+clearAlert()
+}
+
   return (
     <AppContext.Provider
       value={{
-        ...state,displayAlert,registerUser
+        ...state,displayAlert,registerUser,loginUser,setupUser
       }}
     >
       {children}

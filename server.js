@@ -19,6 +19,7 @@ import jobRoutes from './routes/jobRoutes.js'
 //middleware
 import notFoundMiddleware from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
+import authenticateUser from './middleware/auth.js'
 
 app.use(cors({origin:'http://localhost:3000'}))
 if (process.env.NODE_ENV !== 'production') {
@@ -32,7 +33,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth',authRoutes)
-app.use('/api/v1/jobs',jobRoutes)
+app.use('/api/v1/jobs',authenticateUser,jobRoutes)
 
 
 app.use(notFoundMiddleware)

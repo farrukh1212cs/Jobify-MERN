@@ -1,6 +1,6 @@
 import Register from './Register'
 import Error from './Error'
 import Landing from './Landing'
-import ProctedRoute from './ProctedRoute'
+import ProtectedRoute from './ProtectedRoute'
 
-export {Register,Error,Landing,ProctedRoute}
+export {Register,Error,Landing,ProtectedRoute}

@@ -3,7 +3,7 @@ import {useAppContext} from '../context/appContext.js'
 
 
 
-const ProctedRoute = ({children})=>{
+const ProtectedRoute = ({children})=>{
     const {user} = useAppContext()
     if(!user)
     {
@@ -12,4 +12,4 @@ const ProctedRoute = ({children})=>{
     return children
 }
 
-export default ProctedRoute
+export default ProtectedRoute

@@ -22,7 +22,7 @@ import {DISPLAY_ALERT,
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
 const userLocation = localStorage.getItem('location');
-
+const baseURL = "http://localhost:2000/api/v1";
 export const initialState = {
   
   isLoading: false,
@@ -39,9 +39,35 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
 const [state, dispatch] = useReducer(reducer,initialState);
     
+//axios
+const authFetch = axios.create({
+ 
+})
+//request
+authFetch.interceptors.request.use(
+  (config)=>{
+  // config.headers["Authorization"] = `Bearer ${state.token}`
+  return config
+},(error)=>{
+  return Promise.reject(error)
+})
+//response
+authFetch.interceptors.response.use(
+  (response)=>{
+ 
+  return response
+},(error)=>{
+    console.log(error.response);
+    if(error.response.status === 401){
+     
+    }
+
+  return Promise.reject(error)
+})
+
 const displayAlert = ()=>{
         dispatch({type:DISPLAY_ALERT});
-        clearAlert();
+        clearAlert(); 
     }
     
     const clearAlert = () => {
@@ -55,7 +81,7 @@ const displayAlert = ()=>{
 const registerUser = async (currentUser) =>{
   dispatch({type:REGISTER_USER_BEGIN})
 try{
-  const response = await axios.post('http://localhost:2000/api/v1/auth/register',currentUser)
+  const response = await axios.post(baseURL +'/auth/register',currentUser)
   //console.log(response);
   const {user,token,location} = response.data
   dispatch({type:REGISTER_USER_SUCCESS,payload:{user,token,location}})
@@ -79,7 +105,7 @@ clearAlert()
 const loginUser = async (currentUser) =>{
   dispatch({type:LOGIN_USER_BEGIN})
 try{
-  const {data} = await axios.post('http://localhost:2000/api/v1/auth/login',currentUser)
+  const {data} = await axios.post(baseURL + '/auth/login',currentUser)
 
   const {user,token,location} = data
   dispatch({
@@ -100,7 +126,7 @@ clearAlert()
 const setupUser = async ({currentUser,endPoint,alertText}) =>{
   dispatch({type:SETUP_USER_BEGIN})
 try{
-  const {data} = await axios.post(`http://localhost:2000/api/v1/auth/${endPoint}`,currentUser)
+  const {data} = await axios.post(baseURL +`/auth/${endPoint}`,currentUser)
 
   const {user,token,location} = data
   dispatch({
@@ -128,7 +154,14 @@ const logoutUser = () => {
 };
 
 const updateUser = async (currentUser) =>{
-  console.log(currentUser);
+
+  try {
+    const {data } = await authFetch.patch(baseURL + '/auth/updateUser',currentUser)
+    console.log(data);
+  }catch(error){
+    console.log(error.response);
+  }
+
 }
   return (
     <AppContext.Provider

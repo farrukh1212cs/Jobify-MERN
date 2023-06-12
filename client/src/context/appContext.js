@@ -256,6 +256,7 @@ const deleteJob = async (jobId) => {
         ...state,displayAlert,registerUser,loginUser,setupUser
         ,toggleSidebar,logoutUser,updateUser,handleChange,clearValues,createJob,getJobs,setEditJob,
         deleteJob
+
       }}
     >
       {children}

@@ -246,6 +246,7 @@ const getJobs = async () => {
 
 const setEditJob = (id) => {
   dispatch({type: SET_EDIT_JOB,payload : {id}})
+  console.log(id);
 };
 const deleteJob = async (jobId) => {
   console.log(jobId)

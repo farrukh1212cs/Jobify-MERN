@@ -24,6 +24,7 @@ import {DISPLAY_ALERT,
   CREATE_JOB_ERROR,
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
+  SET_EDIT_JOB,
 
 } from './actions'
 
@@ -244,10 +245,14 @@ const getJobs = async () => {
 };
 
 const setEditJob = (id) => {
- console.log(id);
+  dispatch({type: SET_EDIT_JOB,payload : {id}})
 };
 const deleteJob = async (jobId) => {
   console.log(jobId)
+}
+
+const editJob = ()=>{
+  console.log('edit job')
 }
 //-----------------
   return (
@@ -255,7 +260,8 @@ const deleteJob = async (jobId) => {
       value={{
         ...state,displayAlert,registerUser,loginUser,setupUser
         ,toggleSidebar,logoutUser,updateUser,handleChange,clearValues,createJob,getJobs,setEditJob,
-        deleteJob
+        deleteJob,
+        editJob
 
       }}
     >

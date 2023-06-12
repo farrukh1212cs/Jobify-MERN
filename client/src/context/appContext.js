@@ -22,7 +22,8 @@ import {DISPLAY_ALERT,
   CREATE_JOB_BEGIN,
   CREATE_JOB_SUCCESS,
   CREATE_JOB_ERROR,
-
+  GET_JOBS_BEGIN,
+  GET_JOBS_SUCCESS,
 
 } from './actions'
 
@@ -49,7 +50,11 @@ export const initialState = {
   jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   jobType : 'full-time',
   statusOptions: ['interview', 'declined', 'pending'],
-  status:'pending'
+  status:'pending',
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  page: 1,
 };
 const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
@@ -156,9 +161,6 @@ try{
 }catch(error){
   dispatch({type:SETUP_USER_ERROR,payload:{msg:error.response.data.msg}})
 }
-
-
-
 clearAlert()
 }
 const toggleSidebar = () => {
@@ -219,12 +221,41 @@ const createJob = async () => {
   clearAlert();
 };
 
+const getJobs = async () => {
+  
+  let url = baseURL + '/jobs'
+
+  dispatch({ type: GET_JOBS_BEGIN });
+  try {
+    const { data } = await authFetch(url);
+    const { jobs, totalJobs, numOfPages } = data;
+    dispatch({
+      type: GET_JOBS_SUCCESS,
+      payload: {
+        jobs,
+        totalJobs,
+        numOfPages,
+      },
+    });
+  } catch (error) {
+    logoutUser();
+  }
+  clearAlert();
+};
+
+const setEditJob = (id) => {
+ console.log(id);
+};
+const deleteJob = async (jobId) => {
+  console.log(jobId)
+}
 //-----------------
   return (
     <AppContext.Provider
       value={{
         ...state,displayAlert,registerUser,loginUser,setupUser
-        ,toggleSidebar,logoutUser,updateUser,handleChange,clearValues,createJob
+        ,toggleSidebar,logoutUser,updateUser,handleChange,clearValues,createJob,getJobs,setEditJob,
+        deleteJob
       }}
     >
       {children}

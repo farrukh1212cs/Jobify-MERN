@@ -32,7 +32,8 @@ import {DISPLAY_ALERT,
    DELETE_JOB_ERROR,
    SHOW_STATS_BEGIN,
    SHOW_STATS_SUCCESS,
-   CLEAR_FILTERS
+   CLEAR_FILTERS,
+   CHANGE_PAGE
 
 } from './actions'
 
@@ -238,9 +239,9 @@ const createJob = async () => {
 };
 
 const getJobs = async () => {
-  const { search, searchStatus, searchType, sort } = state;
+  const { page,search, searchStatus, searchType, sort } = state;
 
-  let url = baseURL + `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+  let url = baseURL + `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
   if (search) {
     url = url + `&search=${search}`;
   }
@@ -326,6 +327,9 @@ const clearFilters = () =>{
   dispatch({ type: CLEAR_FILTERS });
 }
 
+const changePage = (page)=>{
+   dispatch({ type: CHANGE_PAGE,payload : {page} });
+}
 //-----------------
   return (
     <AppContext.Provider
@@ -335,7 +339,8 @@ const clearFilters = () =>{
         deleteJob,
         editJob,
         showStats,
-        clearFilters
+        clearFilters,
+        changePage
 
       }}
     >

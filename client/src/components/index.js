@@ -12,6 +12,7 @@ import JobInfo from './JobInfo'
 import StatsContainer from './StatsContainer'
 import ChartsContainer from './ChartsContainer'
 import Loading from './Loading'
+import PageBtnContainer from './PageBtnContainer'
 
 
 
@@ -29,5 +30,6 @@ export {
     SearchContainer,
     StatsContainer,
     ChartsContainer,
-    Loading
+    Loading,
+    PageBtnContainer
 }

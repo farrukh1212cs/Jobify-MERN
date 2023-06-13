@@ -26,7 +26,8 @@ import {DISPLAY_ALERT,CLEAR_ALERT ,
    EDIT_JOB_ERROR,
    DELETE_JOB_BEGIN,
    DELETE_JOB_ERROR,
-
+   SHOW_STATS_BEGIN,
+   SHOW_STATS_SUCCESS,
 
   } from './actions'
 import { initialState } from './appContext';
@@ -256,6 +257,24 @@ const reducer = (state, action) => {
           alertText: action.payload.msg,
         };
       }
+
+      if (action.type === SHOW_STATS_BEGIN) {
+        return {
+          ...state,
+          isLoading: true,
+          showAlert: false,
+        };
+      }
+      if (action.type === SHOW_STATS_SUCCESS) {
+        return {
+          ...state,
+          isLoading: false,
+          stats: action.payload.stats,
+          monthlyApplications: action.payload.monthlyApplications,
+        };
+      }
+
+      
     throw new Error(`no such action :${action.type}`);
   };
   export default reducer;

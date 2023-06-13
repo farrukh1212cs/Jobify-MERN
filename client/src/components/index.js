@@ -9,6 +9,10 @@ import SearchContainer from './SearchContainer'
 import JobsContainer from './JobsContainer'
 import Job from './Job'
 import JobInfo from './JobInfo'
+import StatsContainer from './StatsContainer'
+import ChartsContainer from './ChartsContainer'
+import Loading from './Loading'
+
 
 
 export {
@@ -22,4 +26,8 @@ export {
     BigSidebar,
     SmallSidebar,
     FormRowSelect,
-    SearchContainer}
+    SearchContainer,
+    StatsContainer,
+    ChartsContainer,
+    Loading
+}

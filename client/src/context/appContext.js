@@ -29,7 +29,6 @@ import {DISPLAY_ALERT,
    EDIT_JOB_SUCCESS,
    EDIT_JOB_ERROR,
    DELETE_JOB_BEGIN,
-   DELETE_JOB_ERROR,
    SHOW_STATS_BEGIN,
    SHOW_STATS_SUCCESS,
    CLEAR_FILTERS,
@@ -273,11 +272,12 @@ const deleteJob = async (jobId) => {
       await authFetch.delete(`${baseURL}/jobs/${jobId}`);
       getJobs();
     } catch (error) {
-      if (error.response.status === 401) return;
-      dispatch({
-        type: DELETE_JOB_ERROR,
-        payload: { msg: error.response.data.msg },
-      });
+      // if (error.response.status === 401) return;
+      // dispatch({
+      //   type: DELETE_JOB_ERROR,
+      //   payload: { msg: error.response.data.msg },
+      // });
+      logoutUser();
     }
     clearAlert();
 }

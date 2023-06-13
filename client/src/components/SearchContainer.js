@@ -6,7 +6,6 @@ const SearchContainer = () => {
   const [localSearch, setLocalSearch] = useState('');
   const {
     isLoading,
-    search,
     searchStatus,
     searchType,
     sort,

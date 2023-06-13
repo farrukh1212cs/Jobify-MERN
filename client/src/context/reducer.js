@@ -214,7 +214,7 @@ const reducer = (state, action) => {
         return {
           ...state,
           isEditing: true,
-          editJobId : action.payload.id,
+          editJobId: _id,
           position,
           company,
           jobLocation,

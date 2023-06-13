@@ -32,6 +32,7 @@ import {DISPLAY_ALERT,
    DELETE_JOB_ERROR,
    SHOW_STATS_BEGIN,
    SHOW_STATS_SUCCESS,
+   CLEAR_FILTERS
 
 } from './actions'
 
@@ -64,7 +65,12 @@ export const initialState = {
   numOfPages: 1,
   page: 1,
   stats : {},
-  monthlyApplications : []
+  monthlyApplications : [],
+  search: '',
+  searchStatus: 'all',
+  searchType: 'all',
+  sort: 'latest',
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a']
 };
 const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
@@ -232,8 +238,12 @@ const createJob = async () => {
 };
 
 const getJobs = async () => {
-  
-  let url = baseURL + '/jobs'
+  const { search, searchStatus, searchType, sort } = state;
+
+  let url = baseURL + `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+  if (search) {
+    url = url + `&search=${search}`;
+  }
 
   dispatch({ type: GET_JOBS_BEGIN });
   try {
@@ -312,6 +322,9 @@ const showStats = async () => {
   clearAlert();
 };
 
+const clearFilters = () =>{
+  dispatch({ type: CLEAR_FILTERS });
+}
 
 //-----------------
   return (
@@ -321,7 +334,8 @@ const showStats = async () => {
         ,toggleSidebar,logoutUser,updateUser,handleChange,clearValues,createJob,getJobs,setEditJob,
         deleteJob,
         editJob,
-        showStats
+        showStats,
+        clearFilters
 
       }}
     >
